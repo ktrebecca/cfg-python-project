@@ -1,6 +1,7 @@
 # IMPORT
 
 import requests
+import random
 
 # AUTHENTICATION #
 
@@ -33,7 +34,7 @@ def chooserecipe():
     recipe_toprint = hits[chosen_recipe_no]['recipe']
     recipe_toprint_name = recipe_toprint['label']
 
-    confirmation = input("Print recipe for {}? Confirm y or n:".format(recipe_toprint_name))
+    confirmation = input("Print recipe for {}? [y/n]:".format(recipe_toprint_name))
 
     if confirmation == 'n':
         chooserecipe()
@@ -48,13 +49,34 @@ def chooserecipe():
             text_file.write(
                 '\n' + "Link to instructions: " + hits[chosen_recipe_no]['recipe']['url'] + '\n' + '\n')
 
-# PROGRAM RUN #
-
-chooserecipe()
+chooserecipe() # runs program
 print("Printing complete. Enjoy!")
 
+# RANDOMISE COCKTAIL #
 
+def randomcocktail():
+    cocktail_url = 'https://api.edamam.com/api/recipes/v2?type=public&q=cocktail&app_id=8ecbd8b2&app_key=40ff04984f164671df86c0247637c67b&health=alcohol-cocktail&random=true'
+    cocktail_response = requests.get(cocktail_url)
+    cocktail_results = cocktail_response.json()
+    hits2 = cocktail_results['hits']
 
+    cocktail_list = []
+
+    for recipe in hits2:
+        cocktail_id = hits2.index(recipe)
+        cocktail_list.append(cocktail_id)
+
+    chosen_cocktail = random.choice(cocktail_list)
+
+    print(hits2[chosen_cocktail]['recipe']['label'])
+
+cocktail_answer = input("Would you like to randomise a cocktail to go with your meal? [y/n]")
+
+if cocktail_answer == 'n':
+    print("Enjoy your meal!")
+
+if cocktail_answer == 'y':
+    randomcocktail()
 
 
 
