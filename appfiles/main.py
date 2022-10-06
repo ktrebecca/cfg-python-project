@@ -38,7 +38,20 @@ def chooserecipe():
     if confirmation == 'n':
         chooserecipe()
 
+    if confirmation == 'y':
+        with open('print_recipe_file.doc', 'w+') as text_file:
+            text_file.write(hits[chosen_recipe_no]['recipe']['label'].upper() + '\n' + '\n')
+            ingredients_list = hits[chosen_recipe_no]['recipe']['ingredientLines']
+            text_file.write('Ingredients:' + '\n')
+            for ingredient in ingredients_list:
+                text_file.write(ingredient + '\n')
+            text_file.write(
+                '\n' + "Link to instructions: " + hits[chosen_recipe_no]['recipe']['url'] + '\n' + '\n')
+
+# PROGRAM RUN #
+
 chooserecipe()
+print("Printing complete. Enjoy!")
 
 
 
