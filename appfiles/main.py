@@ -24,7 +24,24 @@ print("We found {} hits for your search that use {}:".format(str(len(hits)), ing
 # PRINT RECIPE RESULTS #
 
 for recipe in hits:
-    print(recipe['recipe']['label'], recipe['recipe']['url'])
+    recipe_no = hits.index(recipe)
+    print(recipe_no, recipe['recipe']['label'])
+
+def chooserecipe():
+    chosen_recipe = input('Which recipe would you like to print? [enter number]: ')
+    chosen_recipe_no = int(chosen_recipe)
+    recipe_toprint = hits[chosen_recipe_no]['recipe']
+    recipe_toprint_name = recipe_toprint['label']
+
+    confirmation = input("Print recipe for {}? Confirm y or n:".format(recipe_toprint_name))
+
+    if confirmation == 'n':
+        chooserecipe()
+
+chooserecipe()
+
+
+
 
 
 
