@@ -1,16 +1,27 @@
-# This is a sample Python script.
+# IMPORT
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+import requests
+
+# AUTHENTICATION #
+
+app_id = "8ecbd8b2"
+app_key = "40ff04984f164671df86c0247637c67b"
+
+# INGREDIENT SEARCH #
+
+ingredient = input("What ingredient do you need to use?")
+recipe_url = 'https://api.edamam.com/search?q={}&app_id={}&app_key={}'.format(ingredient, app_id, app_key)
+
+response = requests.get(recipe_url)
+results = response.json()
+print(response)
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+
+
+
+
+
