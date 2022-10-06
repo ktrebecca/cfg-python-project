@@ -19,9 +19,12 @@ print(response)
 # HITS COUNTER #
 
 hits = results['hits']
-print("We found {} hits for your search that use {}!".format(str(len(hits)), ingredient))
+print("We found {} hits for your search that use {}:".format(str(len(hits)), ingredient))
 
+# PRINT RECIPE RESULTS #
 
+for recipe in hits:
+    print(recipe['recipe']['label'], recipe['recipe']['url'])
 
 
 
