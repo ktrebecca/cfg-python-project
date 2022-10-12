@@ -80,7 +80,7 @@ def chooserecipe():
 # RANDOMISE COCKTAIL #
 
 def randomcocktail():
-    cocktail_url = 'https://api.edamam.com/api/recipes/v2?type=public&q=cocktail&app_id=8ecbd8b2&app_key=40ff04984f164671df86c0247637c67b&health=alcohol-cocktail&random=true'
+    cocktail_url = 'https://api.edamam.com/api/recipes/v2?type=public&q=cocktail&app_id={}&app_key={}&health=alcohol-cocktail&random=true'.format(app_id, app_key)
     cocktail_response = requests.get(cocktail_url)
     cocktail_results = cocktail_response.json()
     hits2 = cocktail_results['hits']
