@@ -147,4 +147,4 @@ dmypy.json
 cython_debug/
 
 # Other
-print_recipe_file.doc
+print_recipe_file.txt

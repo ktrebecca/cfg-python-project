@@ -10,7 +10,7 @@ app_key = "40ff04984f164671df86c0247637c67b"
 
 # INGREDIENT SEARCH RESPONSE #
 
-ingredient = input("Welcome! What ingredient do you need to use?")
+ingredient = input("Welcome to our recipe search app! What ingredient do you need to use?")
 recipe_url = 'https://api.edamam.com/search?q={}&app_id={}&app_key={}'.format(ingredient, app_id, app_key)
 
 response = requests.get(recipe_url)
@@ -41,7 +41,7 @@ def chooserecipe():
         chooserecipe()
 
     if recipeprintconfirmation == 'y':
-        with open('print_recipe_file.doc', 'w+') as text_file:
+        with open('print_recipe_file.txt', 'w+') as text_file:
             text_file.write(hits[chosen_recipe_no]['recipe']['label'].upper() + '\n' + '\n')
             ingredients_list = hits[chosen_recipe_no]['recipe']['ingredientLines']
             text_file.write('Ingredients:' + '\n')
@@ -69,19 +69,19 @@ def randomcocktail():
     print(hits2[chosen_cocktail]['recipe']['label'])
     def cocktailconfirm():
 
-        cocktail_confirmation = input("Are you happy with this choice? [y/n]")
+        cocktail_confirmation = input("Are you happy with this choice? [y/n]:")
 
         if cocktail_confirmation == 'n':
             randomcocktail()
 
         if cocktail_confirmation == 'y':
-            cocktail_printoption = input("Would you like to add the recipe to your file?")
+            cocktail_printoption = input("Would you like to add the recipe to your file? [y/n]:")
 
             if cocktail_printoption == 'n':
                 print("Enjoy!")
 
             if cocktail_printoption == 'y':
-                with open('print_recipe_file.doc', 'a') as text_file:
+                with open('print_recipe_file.txt', 'a') as text_file:
                     text_file.write('\n' + '\n' + hits2[chosen_cocktail]['recipe']['label'].upper() + '\n' + '\n')
                     cocktail_ingredients_list = hits2[chosen_cocktail]['recipe']['ingredientLines']
                     text_file.write('Ingredients:' + '\n')
@@ -93,9 +93,11 @@ def randomcocktail():
 
     cocktailconfirm()
 
-chooserecipe() # runs program
+# RUNS PROGRAMME #
 
-cocktail_answer = input("Would you like to randomise a cocktail to go with your meal? [y/n]")
+chooserecipe()
+
+cocktail_answer = input("Would you like to randomise a cocktail to go with your meal? [y/n]:")
 
 if cocktail_answer == 'n':
     print("Enjoy your meal!")
