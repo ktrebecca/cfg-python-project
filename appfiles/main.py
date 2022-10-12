@@ -10,15 +10,12 @@ app_key = "18846472c12cfd691cef02a90701e51d"
 
 # OTHER VARIABLES #
 dietary_requirements = [
-   "none",
    "vegetarian",
    "vegan",
-   "paleo",
-   "high-fiber",
-   "high-protein",
-   "low-carb",
-   "low-fat",
-   "low-sodium"
+   "pescatarian",
+   "dairy-free",
+   "gluten-free",
+   "kosher",
 ]
 
 # INGREDIENT SEARCH RESPONSE #
@@ -26,22 +23,23 @@ dietary_requirements = [
 ingredient = input("Welcome to our recipe search app! What ingredient do you need to use?")
 print("You can choose from the following dietary requirements:")
 for dietary_requirement in dietary_requirements:
-   dietary_requirement_index_number = dietary_requirements.index(dietary_requirement)
-   print(str(dietary_requirement_index_number) + ": " + dietary_requirement)
-desired_diet_index_number_str = input('Do you want to select a dietary requirement? [enter number, or type ' + str(0) + ' if you do not want to.]')
-desired_diet_index_number_int = int(desired_diet_index_number_str)
-desired_diet = dietary_requirements[desired_diet_index_number_int]
+    index_no = dietary_requirements.index(dietary_requirement)
+    print(index_no, dietary_requirement)
+chosen_diet_no = input('Do you want to select a dietary requirement? Enter number or "none":')
 
 # GENERATE RESULTS #
 
 # checks what dietary requirements are needed, and adds them to the query string
-if desired_diet_index_number_int == 0:
-    query = str(str(ingredient))
-else:
-    query = str(str(desired_diet) + "%2C%20" + str(ingredient))
+if chosen_diet_no == 'none':
+    recipe_url = 'https://api.edamam.com/search?q={}&app_id={}&app_key={}&random=true'.format(ingredient, app_id, app_key)
 
-# generates the URL: added a '&random=true' to randomise results each time
-recipe_url = 'https://api.edamam.com/search?q={}&app_id={}&app_key={}&random=true'.format(query, app_id, app_key)
+else:
+    # generates the URL: added a '&random=true' to randomise results each time
+    chosen_diet_int = int(chosen_diet_no)
+    chosen_diet = dietary_requirements[chosen_diet_int]
+    print("You have chosen {}.".format(chosen_diet))
+    recipe_url = 'https://api.edamam.com/search?q={}&app_id={}&app_key={}&health={}&random=true'.format(ingredient, app_id, app_key, chosen_diet)
+
 response = requests.get(recipe_url)
 results = response.json()
 print(response)
