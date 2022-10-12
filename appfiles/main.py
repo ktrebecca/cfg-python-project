@@ -5,34 +5,63 @@ import random
 
 # AUTHENTICATION #
 
-app_id = "8ecbd8b2"
-app_key = "40ff04984f164671df86c0247637c67b"
+app_id = "43bea109"
+app_key = "18846472c12cfd691cef02a90701e51d"
+
+# OTHER VARIABLES #
+dietary_requirements = [
+   "none",
+   "vegetarian",
+   "vegan",
+   "paleo",
+   "high-fiber",
+   "high-protein",
+   "low-carb",
+   "low-fat",
+   "low-sodium"
+]
 
 # INGREDIENT SEARCH RESPONSE #
 
 ingredient = input("Welcome to our recipe search app! What ingredient do you need to use?")
-recipe_url = 'https://api.edamam.com/search?q={}&app_id={}&app_key={}'.format(ingredient, app_id, app_key)
+print("You can choose from the following dietary requirements:")
+for dietary_requirement in dietary_requirements:
+   dietary_requirement_index_number = dietary_requirements.index(dietary_requirement)
+   print(str(dietary_requirement_index_number) + ": " + dietary_requirement)
+desired_diet_index_number_str = input('Do you want to select a dietary requirement? [enter number, or type ' + str(0) + ' if you do not want to.]')
+desired_diet_index_number_int = int(desired_diet_index_number_str)
+desired_diet = dietary_requirements[desired_diet_index_number_int]
 
+# GENERATE RESULTS #
+
+# checks what dietary requirements are needed, and adds them to the query string
+if desired_diet_index_number_int == 0:
+    query = str(str(ingredient))
+else:
+    query = str(str(desired_diet) + "%2C%20" + str(ingredient))
+
+# generates the URL: added a '&random=true' to randomise results each time
+recipe_url = 'https://api.edamam.com/search?q={}&app_id={}&app_key={}&random=true'.format(query, app_id, app_key)
 response = requests.get(recipe_url)
 results = response.json()
 print(response)
 
 # HITS COUNTER #
 
-hits = results['hits']
-print("We found {} hits for your search that use {}:".format(str(len(hits)), ingredient))
+hits1 = results['hits']
+print("We found {} recipes for your search that use {}. Here are a random 10:".format(results['count'], ingredient))
 
 # LIST RECIPE SEARCH RESULTS #
 
-for recipe in hits:
-    recipe_no = hits.index(recipe)
+for recipe in hits1:
+    recipe_no = hits1.index(recipe)
     print(recipe_no, recipe['recipe']['label'])
 
 # CHOOSE AND PRINT RECIPE FUNCTION #
 def chooserecipe():
     chosen_recipe = input('Which recipe would you like to print? [enter number]: ')
     chosen_recipe_no = int(chosen_recipe)
-    recipe_toprint = hits[chosen_recipe_no]['recipe']
+    recipe_toprint = hits1[chosen_recipe_no]['recipe']
     recipe_toprint_name = recipe_toprint['label']
 
     recipeprintconfirmation = input("Print recipe for {}? [y/n]:".format(recipe_toprint_name))
@@ -42,13 +71,13 @@ def chooserecipe():
 
     if recipeprintconfirmation == 'y':
         with open('print_recipe_file.txt', 'w+') as text_file:
-            text_file.write(hits[chosen_recipe_no]['recipe']['label'].upper() + '\n' + '\n')
-            ingredients_list = hits[chosen_recipe_no]['recipe']['ingredientLines']
+            text_file.write(hits1[chosen_recipe_no]['recipe']['label'].upper() + '\n' + '\n')
+            ingredients_list = hits1[chosen_recipe_no]['recipe']['ingredientLines']
             text_file.write('Ingredients:' + '\n')
             for ingredient in ingredients_list:
                 text_file.write(ingredient + '\n')
             text_file.write(
-                '\n' + "Link to instructions: " + hits[chosen_recipe_no]['recipe']['url'] + '\n' + '\n')
+                '\n' + "Link to instructions: " + hits1[chosen_recipe_no]['recipe']['url'] + '\n' + '\n')
 
 # RANDOMISE COCKTAIL #
 
