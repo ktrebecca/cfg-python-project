@@ -10,7 +10,7 @@ app_key = "40ff04984f164671df86c0247637c67b"
 
 # INGREDIENT SEARCH RESPONSE #
 
-ingredient = input("What ingredient do you need to use?")
+ingredient = input("Welcome! What ingredient do you need to use?")
 recipe_url = 'https://api.edamam.com/search?q={}&app_id={}&app_key={}'.format(ingredient, app_id, app_key)
 
 response = requests.get(recipe_url)
@@ -22,24 +22,25 @@ print(response)
 hits = results['hits']
 print("We found {} hits for your search that use {}:".format(str(len(hits)), ingredient))
 
-# PRINT RECIPE RESULTS #
+# LIST RECIPE SEARCH RESULTS #
 
 for recipe in hits:
     recipe_no = hits.index(recipe)
     print(recipe_no, recipe['recipe']['label'])
 
+# CHOOSE AND PRINT RECIPE FUNCTION #
 def chooserecipe():
     chosen_recipe = input('Which recipe would you like to print? [enter number]: ')
     chosen_recipe_no = int(chosen_recipe)
     recipe_toprint = hits[chosen_recipe_no]['recipe']
     recipe_toprint_name = recipe_toprint['label']
 
-    confirmation = input("Print recipe for {}? [y/n]:".format(recipe_toprint_name))
+    recipeprintconfirmation = input("Print recipe for {}? [y/n]:".format(recipe_toprint_name))
 
-    if confirmation == 'n':
+    if recipeprintconfirmation == 'n':
         chooserecipe()
 
-    if confirmation == 'y':
+    if recipeprintconfirmation == 'y':
         with open('print_recipe_file.doc', 'w+') as text_file:
             text_file.write(hits[chosen_recipe_no]['recipe']['label'].upper() + '\n' + '\n')
             ingredients_list = hits[chosen_recipe_no]['recipe']['ingredientLines']
@@ -48,9 +49,6 @@ def chooserecipe():
                 text_file.write(ingredient + '\n')
             text_file.write(
                 '\n' + "Link to instructions: " + hits[chosen_recipe_no]['recipe']['url'] + '\n' + '\n')
-
-chooserecipe() # runs program
-print("Printing complete. Enjoy!")
 
 # RANDOMISE COCKTAIL #
 
@@ -69,6 +67,33 @@ def randomcocktail():
     chosen_cocktail = random.choice(cocktail_list)
 
     print(hits2[chosen_cocktail]['recipe']['label'])
+    def cocktailconfirm():
+
+        cocktail_confirmation = input("Are you happy with this choice? [y/n]")
+
+        if cocktail_confirmation == 'n':
+            randomcocktail()
+
+        if cocktail_confirmation == 'y':
+            cocktail_printoption = input("Would you like to add the recipe to your file?")
+
+            if cocktail_printoption == 'n':
+                print("Enjoy!")
+
+            if cocktail_printoption == 'y':
+                with open('print_recipe_file.doc', 'a') as text_file:
+                    text_file.write('\n' + '\n' + hits2[chosen_cocktail]['recipe']['label'].upper() + '\n' + '\n')
+                    cocktail_ingredients_list = hits2[chosen_cocktail]['recipe']['ingredientLines']
+                    text_file.write('Ingredients:' + '\n')
+                    for ingredient in cocktail_ingredients_list:
+                        text_file.write(ingredient + '\n')
+                    text_file.write('\n' + "Link to instructions: " + hits2[chosen_cocktail]['recipe']['url'] + '\n' + '\n')
+                    print('Enjoy your food and cocktail!')
+                print("Printing complete.")
+
+    cocktailconfirm()
+
+chooserecipe() # runs program
 
 cocktail_answer = input("Would you like to randomise a cocktail to go with your meal? [y/n]")
 
@@ -77,6 +102,9 @@ if cocktail_answer == 'n':
 
 if cocktail_answer == 'y':
     randomcocktail()
+
+
+
 
 
 
