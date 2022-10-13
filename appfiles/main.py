@@ -57,6 +57,7 @@ for recipe in hits1:
 
 # CHOOSE AND PRINT RECIPE FUNCTION #
 
+
 def chooserecipe():
     chosen_recipe = input('Which recipe would you like to print? [enter number]: ')
     chosen_recipe_no = int(chosen_recipe)
@@ -78,7 +79,8 @@ def chooserecipe():
             text_file.write(
                 '\n' + "Link to instructions: " + hits1[chosen_recipe_no]['recipe']['url'] + '\n' + '\n')
 
-# RANDOMISE COCKTAIL #
+# RANDOMISE COCKTAIL FUNCTION #
+
 
 def randomcocktail():
     cocktail_url = 'https://api.edamam.com/api/recipes/v2?type=public&q=cocktail&app_id={}&app_key={}&health=alcohol-cocktail&random=true'.format(app_id, app_key)
@@ -124,6 +126,7 @@ def randomcocktail():
 
 # RUNS PROGRAMME #
 
+
 chooserecipe()
 
 cocktail_answer = input("Is it a school night? Would you like to randomise a cocktail to go with your meal? (We think you should) [y/n]: ")
@@ -133,18 +136,3 @@ if cocktail_answer == 'n':
 
 if cocktail_answer == 'y':
     randomcocktail()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
